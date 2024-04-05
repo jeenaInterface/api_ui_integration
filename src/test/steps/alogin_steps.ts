@@ -2,7 +2,9 @@ import { When } from '@cucumber/cucumber';
 import LoginPage from '../../pages/LoginPage';
 import { fixture } from "../../hooks/pageFixture";
 import { chromium } from 'playwright';
+import { setDefaultTimeout } from '@cucumber/cucumber';
 
+setDefaultTimeout(10 * 1000);
 let loginPage: LoginPage;
 
 
