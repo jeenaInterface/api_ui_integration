@@ -3,8 +3,8 @@ const report = require("multiple-cucumber-html-reporter");
 report.generate({
     jsonDir: "test-results",
     reportPath: "test-results/reports/",
-    reportName: "Interface Automation Report",
-    pageTitle: "DGSecurity Test Report",
+    reportName: "POC",
+    pageTitle: "API+UI Integration",
     displayDuration: false,
     metadata: {
         browser: {

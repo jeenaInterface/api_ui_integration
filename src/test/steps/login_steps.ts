@@ -1,17 +1,18 @@
-import { When, setDefaultTimeout } from "@cucumber/cucumber";
-import { LoginPage } from "../../pages/LoginPage";
-import { loginAPI } from "../../api/api_helpers";
+import { When, Then } from '@cucumber/cucumber';
+import LoginPage from '../../pages/LoginPage';
+import HomePage from '../../pages/HomePage';
+import { fixture } from "../../hooks/pageFixture";
 
-setDefaultTimeout(60 * 1000 * 5);
-
-let login: LoginPage;
+let loginPage: LoginPage;
+let homePage: HomePage;
 
 When('I log in with {string} and {string}', async function(username: string, password: string) {
-    const token = await loginAPI(username, password);
-    login = new LoginPage(this.page, this.context); // Assuming `this.page` and `this.context` are available
-    await login.loginWithToken(token);
+    loginPage = new LoginPage(fixture.page)
+    // loginPage = new LoginPage(this.page, this.context); 
+    await loginPage.loginAndRedirectToDashboard(username, password);
+
 });
 
-
-
-
+Then('Click on the queue menu', async function () {
+    await homePage.clickQuequemenu(); 
+});

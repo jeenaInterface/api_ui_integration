@@ -21,7 +21,7 @@ async function sendEmail() {
       attachments: [
         {
           filename: 'cucumber-report.html',
-          path: '/copsadminlite/test-results/cucumber-report.html',
+          path: '/api_ui_integration/test-results/cucumber-report.html',
         },
       ],
     };
