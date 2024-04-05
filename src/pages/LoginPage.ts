@@ -1,47 +1,32 @@
-import { Page } from 'playwright';
+import { Page, BrowserContext } from 'playwright';
 import { loginAPI } from '../api/api_helpers';
-import PlaywrightWrapper from "../helper/wrapper/PlaywrightWrappers";
 
 export default class LoginPage {
-    private base: PlaywrightWrapper;
+    private page: Page;
+    private context: BrowserContext;
 
-    constructor(private page: Page) {
-        this.base = new PlaywrightWrapper(page);
-    }
-
-    private Elements = {
-        dashboardLabel: "//a[contains(text(),'Dashboard')]",
+    constructor(page: Page, context: BrowserContext) {
+        this.page = page;
+        this.context = context;
     }
 
     async loginAndRedirectToDashboard(username: string, password: string) {
         const token = await loginAPI(username, password);
-        await this.base.goto("http://apmtest.interfacesys.com/#/nav/dashboard")
-        // await this.page.waitForLoadState();
-        
-        // console.info("Waiting for 2 seconds");
-        // await this.page.waitForTimeout(5000);
-        const dashboardLabel = await this.page.locator(this.Elements.dashboardLabel);
-
-        if(dashboardLabel.isVisible){
-          
-            console.log("Redirected to dashboard")
-        } else
-        {
-            console.error("Error navigating to dashboard page");
-        }
-        
-        console.info("Waiting for 2 seconds");
-        await this.page.waitForTimeout(5000);
-        
-        // await this.redirectToDashboard();
+        await this.loginWithToken(token);
+        await this.redirectToDashboard();
     }
-    
+
     private async loginWithToken(token: string) {
-        await this.page.goto("https://apmtest.interfacesys.com/#/login");
-        // You can handle adding cookies here if needed
+        await this.context.addCookies([{ name: 'auth_token', value: token }]);
+        if (!this.context) {
+            throw new Error('Browser context is undefined');
+        }
+        await this.page.goto("https://apmtest.interfacesys.com/");
+        // await this.context.addCookies([{ name: 'auth_token', value: token }]);
     }
 
     private async redirectToDashboard() {
-       await this.page.goto("https://apmtest.interfacesys.com/#/nav/dashboard");
+        // Assuming the dashboard URL is 'https://apmtest.interfacesys.com/dashboard'
+        await this.page.goto("https://apmtest.interfacesys.com/dashboard");
     }
 }
