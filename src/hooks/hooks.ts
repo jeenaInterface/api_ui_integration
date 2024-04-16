@@ -6,6 +6,13 @@ import { getEnv } from "../helper/env/env";
 import { createLogger } from "winston";
 import { options } from "../helper/util/logger";
 const fs = require("fs-extra");
+import { defineConfig, devices } from '@playwright/test'
+import { config as dotenvConfig } from 'dotenv';
+import globalSetup from "../helper/api/global-setup";
+
+
+
+
 
 let browser: Browser;
 let context: BrowserContext;
@@ -109,3 +116,10 @@ function getStorageState(user: string): string | { cookies: { name: string; valu
         return "src/helper/auth/lead.json";
 
 }
+
+dotenvConfig({ path: `.env.${process.env.ENVIRONMENT}` });
+
+export default defineConfig({
+  globalSetup: '../helper/api/global-setup',
+  // Other configurations can be added here
+});

@@ -1,19 +1,23 @@
-import { expect, Page } from "@playwright/test";
-import PlaywrightWrapper from "../helper/wrapper/PlaywrightWrappers";
-import { fixture } from "../hooks/pageFixture";
+import { Page, BrowserContext } from "playwright-core";
+import { setDefaultTimeout } from '@cucumber/cucumber';
 
+setDefaultTimeout(60 * 2000);
 
 export default class HomePage {
-    private base: PlaywrightWrapper
-    constructor(private page: Page) {
-        this.base = new PlaywrightWrapper(page);
+    public page: Page;
+    private context: BrowserContext;
+
+    constructor(page: Page) {
+        this.page = page;
     }
 
     private Elements = {
         QueueMenu: "//a[contains(text(),'Queue')]",
     }
 
-    async clickQuequemenu() {
-        await this.base.waitAndClick(this.Elements.QueueMenu);
+    async clickQueueMenu() {
+        
+        await this.page.goto("https://apmtest.interfacesys.com/#/nav/dashboard");
+        await this.page.click(this.Elements.QueueMenu);
     }
 }

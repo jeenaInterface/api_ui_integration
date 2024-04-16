@@ -15,5 +15,5 @@ export const invokeBrowser = () => {
         default:
             throw new Error("Please set the proper browser!")
     }
-
+    
 }

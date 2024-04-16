@@ -1,4 +1,7 @@
 import { Page } from "@playwright/test";
+import { defineConfig } from '@playwright/test';
+import  GlobalSetup  from '../api/global-setup'; 
+require('dotenv').config({ path: `.env.${process.env.ENVIRONMENT}` });
 
 export default class PlaywrightWrapper {
 
@@ -24,5 +27,8 @@ export default class PlaywrightWrapper {
             this.page.click(link)
         ])
     }
+
+      
+      
 
 }
